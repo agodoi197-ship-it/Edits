@@ -1,180 +1,467 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Alerta Escola Pro | Completo</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    
-    <style>
-        :root {
-            --gov-blue: #002350; --gov-accent: #ffc107; --prof-purple: #6366f1;
-            --bg-body: #f3f4f6; --white: #ffffff; --text-main: #1f2937; --text-sub: #6b7280;
-            --success: #10b981; --danger: #ef4444;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Souza Edits — Short-form video editing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0E0D0B;
+    --bg-raised: #16140F;
+    --fg: #F2EDE4;
+    --muted: #8C8578;
+    --teal: #2C9C93;
+    --rust: #C1622E;
+    --line: #2A271F;
+    --serif-display: 'Cinzel', 'Times New Roman', serif;
+    --serif-body: 'EB Garamond', Georgia, serif;
+  }
+  :root:not([data-theme="light"]) {
+    --bg: #0E0D0B;
+    --bg-raised: #16140F;
+    --fg: #F2EDE4;
+    --muted: #8C8578;
+    --line: #2A271F;
+  }
+  :root[data-theme="light"] {
+    --bg: #0E0D0B;
+    --bg-raised: #16140F;
+    --fg: #F2EDE4;
+    --muted: #8C8578;
+    --line: #2A271F;
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg: #0E0D0B;
+      --bg-raised: #16140F;
+      --fg: #F2EDE4;
+      --muted: #8C8578;
+      --line: #2A271F;
+    }
+  }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--bg-body); color: var(--text-main); height: 100vh; overflow: hidden; }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--fg);
+    font-family:var(--serif-body);
+    font-size:18px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  img{max-width:100%; display:block;}
 
-        /* Telas */
-        .screen { display: none; height: 100vh; padding: 20px 20px 100px; overflow-y: auto; flex-direction: column; animation: fadeIn 0.3s ease; }
-        .screen.active { display: flex; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+  a{color:inherit;}
+  a:focus-visible, button:focus-visible{outline:2px solid var(--teal); outline-offset:3px;}
 
-        /* UI Elements */
-        .glass-card { background: var(--white); border-radius: 20px; padding: 25px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; margin-bottom: 15px; }
-        .header-section { text-align: center; padding: 20px 0; }
-        .header-section i { font-size: 40px; color: var(--gov-accent); margin-bottom: 10px; }
-        
-        .input-wrapper { margin-bottom: 12px; position: relative; }
-        .input-wrapper label { font-size: 12px; font-weight: 600; color: var(--text-sub); margin-bottom: 5px; display: block; }
-        .input-wrapper input, .input-wrapper textarea, .input-wrapper select { 
-            width: 100%; padding: 12px 15px; border-radius: 10px; border: 1px solid #d1d5db; outline: none; background: #f9fafb; font-size: 14px;
-        }
+  .wrap{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 32px;
+  }
 
-        .btn { width: 100%; padding: 14px; border-radius: 12px; border: none; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .btn-primary { background: var(--gov-blue); color: white; }
-        .btn-purple { background: var(--prof-purple); color: white; }
-        .btn-ghost { background: transparent; color: var(--text-sub); border: 1px solid #d1d5db; margin-top: 10px; }
+  /* ---------- NAV ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(14,13,11,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav.wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    height:76px;
+  }
+  .brand{
+    font-family:var(--serif-display);
+    font-weight:600;
+    font-size:20px;
+    letter-spacing:0.04em;
+  }
+  .navlinks{
+    display:flex; gap:36px; font-size:16px; color:var(--muted);
+  }
+  .navlinks a{text-decoration:none; transition:color .25s ease;}
+  .navlinks a:hover{color:var(--fg);}
+  .nav-cta{
+    font-family:var(--serif-body);
+    font-size:16px;
+    padding:10px 20px;
+    border:1px solid var(--fg);
+    border-radius:2px;
+    text-decoration:none;
+    transition:background .25s ease, color .25s ease;
+  }
+  .nav-cta:hover{background:var(--fg); color:var(--bg);}
 
-        /* Tarefas */
-        .task-card { background: white; border-radius: 16px; padding: 18px; margin-bottom: 12px; border: 1px solid #e5e7eb; border-left: 6px solid #d1d5db; }
-        .task-card.done { border-left-color: var(--success); opacity: 0.7; }
-        .task-date { font-size: 12px; color: var(--danger); font-weight: 600; margin-bottom: 8px; }
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:64px 0 56px;
+    max-width:640px;
+  }
+  .hero-eyebrow{
+    color:var(--rust);
+    font-size:15px;
+    font-style:italic;
+    margin-bottom:16px;
+    font-family:var(--serif-body);
+  }
+  .hero h1{
+    font-family:var(--serif-display);
+    font-weight:600;
+    font-size:clamp(32px, 4.4vw, 46px);
+    line-height:1.14;
+    letter-spacing:0.005em;
+  }
+  .hero p.lead{
+    margin-top:20px;
+    max-width:48ch;
+    font-size:18px;
+    color:var(--muted);
+  }
+  .hero-actions{
+    margin-top:40px;
+    display:flex; align-items:center; gap:28px;
+  }
+  .btn-primary{
+    display:inline-flex; align-items:center; gap:10px;
+    background:var(--teal);
+    color:#08130F;
+    font-family:var(--serif-body);
+    font-weight:600;
+    font-size:17px;
+    padding:15px 28px;
+    border-radius:2px;
+    text-decoration:none;
+    transition:transform .2s ease, background .2s ease;
+  }
+  .btn-primary:hover{background:#38B0A6; transform:translateY(-1px);}
+  .hero-actions .price-note{
+    color:var(--muted);
+    font-size:15px;
+  }
+  .hero-actions .price-note strong{color:var(--fg); font-weight:600;}
 
-        /* Navbar */
-        .navbar { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid #e5e7eb; display: none; justify-content: space-around; padding: 10px 0 25px; z-index: 100; }
-        .nav-item { color: #9ca3af; text-align: center; font-size: 11px; font-weight: 600; cursor: pointer; flex: 1; }
-        .nav-item.active { color: var(--gov-blue); }
-        .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
-    </style>
+  /* ---------- SECTION SHARED ---------- */
+  section{padding:88px 0;}
+  .section-head{
+    display:grid;
+    grid-template-columns:1fr 1.4fr;
+    gap:40px;
+    margin-bottom:56px;
+    border-top:1px solid var(--line);
+    padding-top:28px;
+  }
+  .section-head h2{
+    font-family:var(--serif-display);
+    font-weight:600;
+    font-size:clamp(28px, 3vw, 38px);
+    line-height:1.15;
+  }
+  .section-head .section-desc{
+    color:var(--muted);
+    font-size:18px;
+    max-width:52ch;
+    align-self:end;
+  }
+
+  /* ---------- WHAT I EDIT ---------- */
+  .edit-types{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  .edit-type{
+    background:var(--bg);
+    padding:34px 28px;
+  }
+  .edit-type h3{
+    font-family:var(--serif-display);
+    font-size:19px;
+    font-weight:500;
+    margin-bottom:12px;
+  }
+  .edit-type p{
+    color:var(--muted);
+    font-size:16px;
+  }
+
+  /* ---------- PRICING ---------- */
+  .pricing-table{
+    max-width:520px;
+  }
+  .price-row{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:20px;
+    padding:16px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .price-row .tier-name{
+    font-family:var(--serif-body);
+    font-size:17px;
+  }
+  .price-row .tier-price{
+    font-family:var(--serif-display);
+    font-size:19px;
+    color:var(--teal);
+    font-weight:600;
+    white-space:nowrap;
+  }
+  .pricing-footnote{
+    margin-top:18px;
+    color:var(--muted);
+    font-size:15px;
+    max-width:480px;
+  }
+
+  /* ---------- PROCESS ---------- */
+  .process{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:44px;
+  }
+  .process-step{
+    border-top:2px solid var(--rust);
+    padding-top:20px;
+  }
+  .process-step .num{
+    font-family:var(--serif-display);
+    color:var(--rust);
+    font-size:15px;
+    letter-spacing:0.08em;
+  }
+  .process-step h3{
+    font-family:var(--serif-display);
+    font-weight:500;
+    font-size:21px;
+    margin:12px 0 10px;
+  }
+  .process-step p{
+    color:var(--muted);
+    font-size:16px;
+  }
+
+  /* ---------- CONTACT ---------- */
+  .contact{
+    background:var(--bg-raised);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .contact-inner{
+    display:grid;
+    grid-template-columns:1.3fr 1fr;
+    gap:48px;
+    align-items:center;
+    padding:88px 0;
+  }
+  .contact h2{
+    font-family:var(--serif-display);
+    font-weight:600;
+    font-size:clamp(30px, 4vw, 44px);
+    line-height:1.15;
+    max-width:12ch;
+  }
+  .contact p{
+    color:var(--muted);
+    margin-top:18px;
+    max-width:44ch;
+    font-size:18px;
+  }
+  .contact-panel{
+    border:1px solid var(--line);
+    padding:36px;
+  }
+  .contact-panel .label{
+    color:var(--muted);
+    font-size:14px;
+    letter-spacing:0.06em;
+    margin-bottom:10px;
+  }
+  .contact-panel .whatsapp-number{
+    font-family:var(--serif-display);
+    font-size:24px;
+    margin-bottom:26px;
+  }
+  .btn-whatsapp{
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    width:100%;
+    background:var(--teal);
+    color:#08130F;
+    font-family:var(--serif-body);
+    font-weight:600;
+    font-size:18px;
+    padding:16px 20px;
+    border-radius:2px;
+    text-decoration:none;
+    transition:background .2s ease, transform .2s ease;
+  }
+  .btn-whatsapp:hover{background:#38B0A6; transform:translateY(-1px);}
+  .btn-whatsapp svg{width:20px; height:20px; flex:none;}
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    padding:40px 0;
+  }
+  footer .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    color:var(--muted);
+    font-size:14px;
+  }
+  footer .brand{font-size:16px;}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 860px){
+    .navlinks{display:none;}
+    .hero{grid-template-columns:1fr; padding-top:56px;}
+    .hero-actions{flex-direction:column; align-items:flex-start; gap:16px;}
+    .section-head{grid-template-columns:1fr; gap:16px;}
+    .edit-types{grid-template-columns:1fr;}
+    .price-row{grid-template-columns:1fr; gap:8px;}
+    .process{grid-template-columns:1fr; gap:36px;}
+    .contact-inner{grid-template-columns:1fr; padding:64px 0;}
+    footer .wrap{flex-direction:column; gap:10px; text-align:center;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{transition:none !important;}
+  }
+</style>
 </head>
 <body>
 
-    <div class="container">
-        <section id="scr-login" class="screen active">
-            <div class="header-section"><i class="fas fa-graduation-cap"></i><h2>Alerta Escola MT</h2></div>
-            <div class="glass-card">
-                <div class="input-wrapper"><input type="email" id="l-email" placeholder="E-mail Institucional"></div>
-                <div class="input-wrapper"><input type="password" id="l-pass" placeholder="Senha"></div>
-                <button class="btn btn-primary" onclick="app.login('aluno')">ENTRAR COMO ALUNO</button>
-                <button class="btn btn-purple" style="margin-top:10px" onclick="app.login('prof')">ENTRAR COMO PROFESSOR</button>
-                <button class="btn btn-ghost" onclick="app.nav('scr-reg')">Criar Nova Conta</button>
-            </div>
-        </section>
-
-        <section id="scr-reg" class="screen">
-            <div class="header-section"><h2>Cadastro Pro</h2></div>
-            <div class="glass-card">
-                <div class="input-wrapper"><input type="text" id="r-name" placeholder="Nome Completo"></div>
-                <div class="input-wrapper"><input type="email" id="r-email" placeholder="E-mail (@edu ou @professor)"></div>
-                <div class="input-wrapper"><input type="password" id="r-pass" placeholder="Crie uma Senha"></div>
-                
-                <div id="box-prof-key" style="display:none" class="input-wrapper">
-                    <label>Chave Mestre Docente</label>
-                    <input type="password" id="r-key" placeholder="Código de Segurança">
-                </div>
-
-                <button class="btn btn-primary" id="btn-finish-reg" onclick="app.register()">FINALIZAR CADASTRO</button>
-                <button class="btn btn-ghost" id="btn-toggle-reg" onclick="app.toggleRegMode()">SOU PROFESSOR(A)</button>
-                <button class="btn btn-ghost" style="border:none" onclick="app.nav('scr-login')">Voltar ao Login</button>
-            </div>
-        </section>
-
-        <section id="scr-dash" class="screen">
-            <h3 id="welcome-msg">Bem-vindo!</h3>
-            <div class="glass-card" style="margin-top:20px">
-                <h4>Avisos Escolares</h4>
-                <p style="font-size:14px; color:gray; margin-top:10px">Nenhum aviso importante no momento.</p>
-            </div>
-        </section>
-
-        <section id="scr-tasks" class="screen">
-            <div id="prof-area" style="display:none">
-                <h3>Criar Tarefa 📋</h3>
-                <div class="glass-card">
-                    <div class="input-wrapper"><input type="text" id="t-title" placeholder="Título da Atividade"></div>
-                    <div class="input-wrapper"><input type="date" id="t-date"></div>
-                    <div class="input-wrapper">
-                        <select id="t-target">
-                            <option value="Todos">Todas as Turmas</option>
-                            <option value="9º Ano A">9º Ano A</option>
-                            <option value="1º Ano EM">1º Ano Ensino Médio</option>
-                        </select>
-                    </div>
-                    <textarea id="t-desc" placeholder="Descrição da tarefa..." style="width:100%; border-radius:10px; padding:10px; border:1px solid #ddd; margin-bottom:10px"></textarea>
-                    <button class="btn btn-purple" onclick="app.createTask()">PUBLICAR PARA ALUNOS</button>
-                </div>
-            </div>
-
-            <div id="student-area" style="display:none">
-                <h3>Minha Agenda 📖</h3>
-                <p style="color:gray; margin-bottom:15px">Tarefas pendentes e prazos</p>
-            </div>
-
-            <div id="task-list"></div>
-        </section>
+<header>
+  <nav class="wrap">
+    <div class="brand">SOUZA EDITS</div>
+    <div class="navlinks">
+      <a href="#work">What I edit</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#process">Process</a>
     </div>
+    <a class="nav-cta" href="#contact">Get a cut</a>
+  </nav>
+</header>
 
-    <nav class="navbar" id="main-nav">
-        <div class="nav-item active" onclick="app.nav('scr-dash', this)"><i class="fas fa-home"></i>Início</div>
-        <div class="nav-item" onclick="app.nav('scr-tasks', this)"><i class="fas fa-tasks"></i>Tarefas</div>
-        <div class="nav-item" onclick="location.reload()"><i class="fas fa-sign-out-alt"></i>Sair</div>
-    </nav>
+<main>
+  <section class="hero wrap">
+    <div class="hero-eyebrow">Short-form video editing</div>
+    <h1>Clean edits for your short clips.</h1>
+    <p class="lead">I cut, pace, and color your reels and TikToks so they're ready to post — simple work, fast turnaround, fair price.</p>
+    <div class="hero-actions">
+      <a class="btn-primary" href="#contact">Send me a clip</a>
+      <span class="price-note">From <strong>$2</strong> to <strong>$10</strong> per video</span>
+    </div>
+  </section>
 
-    <script>
-        const app = {
-            user: null,
-            isProfMode: false,
-            storage: {
-                users: JSON.parse(localStorage.getItem('app_users')) || [],
-                tasks: JSON.parse(localStorage.getItem('app_tasks')) || []
-            },
+  <section id="work">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>What I edit</h2>
+        <p class="section-desc">Simple, focused work — built for the platforms where the first second decides everything.</p>
+      </div>
+      <div class="edit-types">
+        <div class="edit-type">
+          <h3>Reels &amp; TikToks</h3>
+          <p>Clean cuts, paced to the beat, with captions and hooks that keep people watching to the end.</p>
+        </div>
+        <div class="edit-type">
+          <h3>Color grading</h3>
+          <p>A consistent look across your clips — moody, warm, or cinematic, matched to your page's style.</p>
+        </div>
+        <div class="edit-type">
+          <h3>Highlight clips</h3>
+          <p>Long footage cut down to the single strongest 15–60 seconds, ready to publish.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-            nav: (id, el) => {
-                document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-                document.getElementById(id).classList.add('active');
-                if(el) {
-                    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-                    el.classList.add('active');
-                }
-                const isAuth = id === 'scr-login' || id === 'scr-reg';
-                document.getElementById('main-nav').style.display = isAuth ? 'none' : 'flex';
-                if(id === 'scr-tasks') app.renderTasks();
-            },
+  <section id="pricing">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Pricing</h2>
+        <p class="section-desc">Priced by length and complexity. Every video is capped at one minute.</p>
+      </div>
+      <div class="pricing-table">
+        <div class="price-row">
+          <div class="tier-name">Short clip, basic cut and captions</div>
+          <div class="tier-price">$2 – $4</div>
+        </div>
+        <div class="price-row">
+          <div class="tier-name">Full edit with transitions and color</div>
+          <div class="tier-price">$5 – $7</div>
+        </div>
+        <div class="price-row">
+          <div class="tier-name">Full edit plus sound and revisions</div>
+          <div class="tier-price">$8 – $10</div>
+        </div>
+      </div>
+      <p class="pricing-footnote">Exact price depends on your footage — I'll quote it after seeing the clip.</p>
+    </div>
+  </section>
 
-            toggleRegMode: () => {
-                app.isProfMode = !app.isProfMode;
-                document.getElementById('box-prof-key').style.display = app.isProfMode ? 'block' : 'none';
-                document.getElementById('btn-toggle-reg').innerText = app.isProfMode ? "SOU ALUNO" : "SOU PROFESSOR(A)";
-            },
+  <section id="process">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>How it works</h2>
+        <p class="section-desc">Three steps, start to finish, over WhatsApp.</p>
+      </div>
+      <div class="process">
+        <div class="process-step">
+          <div class="num">01</div>
+          <h3>Send your clip</h3>
+          <p>Message me on WhatsApp with your raw footage and the style you're going for.</p>
+        </div>
+        <div class="process-step">
+          <div class="num">02</div>
+          <h3>I cut it</h3>
+          <p>You get a price quote up front, then I edit, grade, and caption your video.</p>
+        </div>
+        <div class="process-step">
+          <div class="num">03</div>
+          <h3>You post it</h3>
+          <p>Final file lands back in your chat, ready to upload — one revision included.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-            register: () => {
-                const name = document.getElementById('r-name').value;
-                const email = document.getElementById('r-email').value;
-                const pass = document.getElementById('r-pass').value;
-                const key = document.getElementById('r-key').value;
+  <section class="contact" id="contact">
+    <div class="wrap contact-inner">
+      <div>
+        <h2>Let's cut your next video.</h2>
+        <p>Message me on WhatsApp with your footage and I'll send a quote back within the day.</p>
+      </div>
+      <div class="contact-panel">
+        <div class="label">WHATSAPP</div>
+        <div class="whatsapp-number">+55 66 99976-1232</div>
+        <a class="btn-whatsapp" href="https://wa.me/5566999761232" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.472-.148-.67.15-.198.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.372-.025-.521-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.001 2C6.478 2 2 6.477 2 12c0 1.947.556 3.766 1.517 5.306L2 22l4.834-1.487C8.316 21.472 10.106 22 12 22c5.523 0 10-4.477 10-10S17.523 2 12.001 2zm0 18.1c-1.727 0-3.328-.51-4.678-1.386l-.335-.213-3.334 1.026 1.043-3.267-.22-.34C3.474 14.492 2.9 12.797 2.9 11c0-5.02 4.08-9.1 9.101-9.1 5.02 0 9.1 4.08 9.1 9.1 0 5.021-4.08 9.1-9.1 9.1z"/></svg>
+          Message on WhatsApp
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
 
-                if(!name || !email || !pass) return alert("Preencha todos os campos!");
-                
-                if(app.isProfMode) {
-                    if(!email.endsWith('@professor.mt.gov.br')) return alert("Use e-mail @professor");
-                    if(key !== "MT2026") return alert("Chave mestre incorreta!");
-                } else {
-                    if(!email.endsWith('@edu.mt.gov.br')) return alert("Use e-mail @edu");
-                }
+<footer>
+  <div class="wrap">
+    <div class="brand">SOUZA EDITS</div>
+    <div>Short-form video editing, from $2 per video.</div>
+  </div>
+</footer>
 
-                app.storage.users.push({ name, email, pass, role: app.isProfMode ? 'prof' : 'aluno' });
-                localStorage.setItem('app_users', JSON.stringify(app.storage.users));
-                alert("Conta criada! Faça login.");
-                app.nav('scr-login');
-            },
-
-            login: (role) => {
-                const email = document.getElementById('l-email').value;
-                const pass = document.getElementById('l-pass').value;
+</body>
+</html>
+document.getElementById('l-pass').value;
                 const found = app.storage.users.find(u => u.email === email && u.pass === pass && u.role === role);
 
                 if(found) {
